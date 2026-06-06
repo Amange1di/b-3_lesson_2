@@ -1,118 +1,41 @@
-# Code #1
-# import sys
-# from PyQt6.QtWidgets import QApplication, QWidget
-#
-# app = QApplication(sys.argv)
-#
-# window = QWidget()
-# window.setWindowTitle("Моё первое окно")
-# window.resize(400, 300)
-#
-# window.show()
-#
-# sys.exit(app.exec())
-
-# Code #2
-# import sys
-# from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QPushButton
-#
-# class MainWindow(QWidget):
-#     def __init__(self):
-#         super().__init__()
-#         self.setup_ui()
-#
-#     def setup_ui(self):
-#         self.setWindowTitle("PyQt6")
-#         self.resize(450, 350)
-#
-#         self.label = QLabel("Привет", self)
-#         self.label.move(50, 50)
-#
-#         self.button = QPushButton("Нажми", self)
-#         self.button.move(50, 100)
-#
-# app = QApplication(sys.argv)
-# window = MainWindow()
-# window.show()
-#
-# sys.exit(app.exec())
-
-# Code #3
-# from PyQt6.QtWidgets import *
-#
-# app = QApplication([])
-#
-# window = QWidget()
-#
-# layout = QVBoxLayout()
-#
-# num1 = QLineEdit()
-# num2 = QLineEdit()
-#
-# button = QPushButton("Сложить")
-#
-# result = QLabel("0")
-#
-# layout.addWidget(num1)
-# layout.addWidget(num2)
-# layout.addWidget(button)
-# layout.addWidget(result)
-#
-# window.setLayout(layout)
-#
-# def calculate():
-#     try:
-#         a = int(num1.text())
-#         b = int(num2.text())
-#
-#         result.setText(str(a+b))
-#     except:
-#         result.setText("Ошибка")
-#
-# button.clicked.connect(calculate)
-#
-# window.show()
-# app.exec()
-
-# Code 4
 import sys
-from PyQt6.QtWidgets import *
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton
 
 
-class MainWindow(QWidget):
-
+class PasswordChecker(QWidget):
     def __init__(self):
         super().__init__()
-
         self.setup_ui()
 
     def setup_ui(self):
-        self.resize(500, 300)
+        self.setWindowTitle("Проверка пароля")
+        self.resize(350, 180)
 
-        self.input_name = QLineEdit(self)
-        self.input_name.move(50, 50)
+        self.input_password = QLineEdit(self)
+        self.input_password.setEchoMode(QLineEdit.EchoMode.Password)
+        self.input_password.setPlaceholderText("Введите пароль")
+        self.input_password.setGeometry(20, 20, 310, 30)
 
-        self.button = QPushButton("Поздороваться", self)
-        self.button.move(50, 100)
+        self.button_check = QPushButton("Проверить", self)
+        self.button_check.setGeometry(20, 60, 310, 30)
+        self.button_check.clicked.connect(self.check_password)
 
-        self.label = QLabel("", self)
-        self.label.move(50, 150)
-        self.label.resize(300, 30)
+        self.label_message = QLabel("", self)
+        self.label_message.setGeometry(20, 100, 310, 30)
 
-        self.button.clicked.connect(self.say_hello)
+    def check_password(self):
+        password = self.input_password.text()
 
-    def say_hello(self):
-        name = self.input_name.text()
-
-        if name:
-            self.label.setText(f"Привет, {name}!")
+        if not password:
+            self.label_message.setText("Введите пароль")
+        elif password == "12345":
+            self.label_message.setText("Доступ разрешён")
         else:
-            self.label.setText("Введите имя")
+            self.label_message.setText("Неверный пароль")
 
 
-app = QApplication(sys.argv)
-
-window = MainWindow()
-window.show()
-
-sys.exit(app.exec())
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = PasswordChecker()
+    window.show()
+    sys.exit(app.exec())
